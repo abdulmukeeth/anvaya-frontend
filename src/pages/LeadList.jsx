@@ -1,4 +1,3 @@
-// anvaya-frontend/src/pages/LeadList.jsx
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { getLeads, getAgents } from "../services/api";

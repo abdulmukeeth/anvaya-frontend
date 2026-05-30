@@ -1,4 +1,3 @@
-// anvaya-frontend/src/pages/LeadDetails.jsx
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getLeadById, getComments, addComment, deleteLead, updateLead, getAgents } from "../services/api";

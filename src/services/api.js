@@ -1,5 +1,4 @@
-// anvaya-frontend/src/services/api.js
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://anvaya-backend-five.vercel.app";
 
 const handleResponse = async (res) => {
   if (!res.ok) {

@@ -1,4 +1,3 @@
-// anvaya-frontend/src/components/Layout.jsx
 import { NavLink } from "react-router-dom";
 
 const navItems = [

@@ -1,4 +1,3 @@
-// anvaya-frontend/src/pages/Dashboard.jsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getLeads, getPipelineReport } from "../services/api";
@@ -29,7 +28,6 @@ export default function Dashboard() {
 
   return (
     <div className="container-fluid p-4">
-      {/* Header */}
       <div className="d-flex justify-content-between align-items-start mb-4">
         <div>
           <h4 className="fw-semibold mb-1">Dashboard</h4>
@@ -38,10 +36,9 @@ export default function Dashboard() {
         <Link to="/leads/new" className="btn btn-dark btn-sm">+ New Lead</Link>
       </div>
 
-      {/* Status stat cards */}
       <div className="row g-3 mb-4">
         {STATUS_CONFIG.map(({ key, color, bg }) => (
-          <div className="col" key={key}>
+          <div className="col-6 col-md" key={key}>
             <Link to={`/leads?status=${encodeURIComponent(key)}`} className="stat-card-link">
               <div className="card border-0 shadow-sm stat-card" style={{ background: bg, borderLeft: `3px solid ${color}` }}>
                 <div className="card-body py-3 px-3">
@@ -54,9 +51,7 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Bottom row */}
       <div className="row g-3">
-        {/* Recent Leads */}
         <div className="col-md-6">
           <div className="card border shadow-sm h-100">
             <div className="card-header bg-white d-flex justify-content-between align-items-center border-bottom py-3">
@@ -87,7 +82,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Pipeline summary */}
         <div className="col-md-6">
           <div className="card border shadow-sm h-100">
             <div className="card-header bg-white d-flex justify-content-between align-items-center border-bottom py-3">
@@ -95,7 +89,14 @@ export default function Dashboard() {
               <Link to="/reports" className="text-decoration-none small text-primary">Full report →</Link>
             </div>
             <div className="card-body">
-              {pipeline && (
+              {pipeline && pipeline.totalLeadsInPipeline === 0 ? (
+                <div className="d-flex flex-column align-items-center justify-content-center text-center py-4" style={{ minHeight: 140 }}>
+                  <span style={{ fontSize: 32, marginBottom: 10 }}>📭</span>
+                  <p className="fw-medium mb-1" style={{ fontSize: 14 }}>No active leads yet</p>
+                  <p className="text-muted small mb-3">Leads you create will appear here as pipeline progress.</p>
+                  <Link to="/leads/new" className="btn btn-dark btn-sm">+ Create your first lead</Link>
+                </div>
+              ) : pipeline && (
                 <>
                   <div className="mb-3">
                     <span style={{ fontSize: 40, fontWeight: 700, letterSpacing: -2, lineHeight: 1 }}>{pipeline.totalLeadsInPipeline}</span>
