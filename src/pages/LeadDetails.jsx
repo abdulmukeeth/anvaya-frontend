@@ -19,6 +19,7 @@ export default function LeadDetails() {
   const [comments, setComments] = useState([]);
   const [agents, setAgents]   = useState([]);
   const [text, setText]       = useState("");
+  const [commentAuthor, setCommentAuthor] = useState("");
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [editForm, setEditForm] = useState({});
@@ -44,9 +45,9 @@ export default function LeadDetails() {
   useEffect(() => { loadData().finally(() => setLoading(false)); }, [id]);
 
   const handleComment = async () => {
-    if (!text.trim()) return;
+    if (!text.trim() || !commentAuthor) return;
     try {
-      await addComment(id, { author: lead?.salesAgent?._id, commentText: text });
+      await addComment(id, { author: commentAuthor, commentText: text });
       setText("");
       setComments(await getComments(id));
     } catch (err) { setError(err.message); }
@@ -77,7 +78,7 @@ export default function LeadDetails() {
   return (
     <div className="container-fluid p-4">
       <Link to="/leads" className="back-link">← Back to Leads</Link>
-      <div className="d-flex justify-content-between align-items-start mb-4">
+      <div className="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-2">
         <h4 className="fw-semibold mb-0">{lead.name}</h4>
         <div className="d-flex gap-2">
           <button className="btn btn-outline-dark btn-sm" onClick={() => setEditing(!editing)}>
@@ -91,7 +92,7 @@ export default function LeadDetails() {
 
       <div className="row g-3">
         {/* Lead details card */}
-        <div className="col-md-6">
+        <div className="col-12 col-lg-6">
           <div className="card border shadow-sm h-100">
             <div className="card-header bg-white border-bottom py-3">
               <span className="fw-semibold" style={{ fontSize: 14 }}>Lead Details</span>
@@ -146,6 +147,7 @@ export default function LeadDetails() {
                     <div className="col-6">
                       <label className="form-label small fw-semibold text-muted text-uppercase">Sales Agent</label>
                       <select className="form-select form-select-sm" value={editForm.salesAgent} onChange={e => setEditForm({ ...editForm, salesAgent: e.target.value })}>
+                        <option value="">— Select an agent —</option> 
                         {agents.map(a => <option key={a._id} value={a._id}>{a.name}</option>)}
                       </select>
                     </div>
@@ -166,7 +168,7 @@ export default function LeadDetails() {
                   </div>
                   <div className="d-flex gap-2 justify-content-end">
                     <button className="btn btn-outline-secondary btn-sm" onClick={() => setEditing(false)}>Cancel</button>
-                    <button className="btn btn-dark btn-sm" onClick={handleSave} disabled={saving}>
+                    <button className="btn btn-dark btn-sm" onClick={handleSave} disabled={saving || !editForm.salesAgent}>
                       {saving ? "Saving…" : "Save Changes"}
                     </button>
                   </div>
@@ -177,7 +179,7 @@ export default function LeadDetails() {
         </div>
 
         {/* Comments card */}
-        <div className="col-md-6">
+        <div className="col-12 col-lg-6">
           <div className="card border shadow-sm h-100">
             <div className="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
               <span className="fw-semibold" style={{ fontSize: 14 }}>Comments</span>
@@ -190,7 +192,7 @@ export default function LeadDetails() {
                 )}
                 {comments.map(c => (
                   <div key={c._id} className="bg-light rounded p-3">
-                    <div className="d-flex justify-content-between mb-1">
+                    <div className="d-flex justify-content-between mb-1 flex-wrap gap-1">
                       <span className="fw-semibold" style={{ fontSize: 12 }}>{c.author?.name || "Unknown"}</span>
                       <span className="text-muted" style={{ fontSize: 11 }}>{new Date(c.createdAt).toLocaleString()}</span>
                     </div>
@@ -198,7 +200,24 @@ export default function LeadDetails() {
                   </div>
                 ))}
               </div>
+
               <div className="mt-auto">
+                <div className="mb-2">
+                  <label className="form-label small fw-semibold text-muted text-uppercase mb-1"
+                    style={{ fontSize: 10, letterSpacing: "0.5px" }}>
+                    Commenting as
+                  </label>
+                  <select
+                    className="form-select form-select-sm"
+                    value={commentAuthor}
+                    onChange={e => setCommentAuthor(e.target.value)}
+                  >
+                    <option value="">Select agent…</option>
+                    {agents.map(a => (
+                      <option key={a._id} value={a._id}>{a.name}</option>
+                    ))}
+                  </select>
+                </div>
                 <textarea
                   value={text}
                   onChange={e => setText(e.target.value)}
@@ -206,7 +225,8 @@ export default function LeadDetails() {
                   placeholder="Add a comment or update…"
                   rows={3}
                 />
-                <button onClick={handleComment} className="btn btn-dark btn-sm w-100" disabled={!text.trim()}>
+                <button onClick={handleComment} className="btn btn-dark btn-sm w-100" disabled={!text.trim() || !commentAuthor}
+                >
                   Add Comment
                 </button>
               </div>

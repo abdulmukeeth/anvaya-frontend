@@ -6,6 +6,7 @@ import AddLead from "./pages/AddLead";
 import LeadDetails from "./pages/LeadDetails";
 import Agents from "./pages/Agents";
 import Reports from "./pages/Reports";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/agents" element={<Agents />} />
           <Route path="/agents/new" element={<Agents />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </Layout>
     </BrowserRouter>

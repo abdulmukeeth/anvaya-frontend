@@ -64,7 +64,7 @@ export default function LeadList() {
       </div>
 
       {/* Filters */}
-      <div className="d-flex gap-2 flex-wrap mb-3">
+      <div className="d-flex gap-2 flex-wrap mb-3 filter-bar">
         <select className="form-select form-select-sm" style={{ width: "auto" }} value={status} onChange={e => setFilter("status", e.target.value)}>
           <option value="">All Statuses</option>
           {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
@@ -96,6 +96,7 @@ export default function LeadList() {
         </div>
       ) : (
         <div className="card border shadow-sm">
+          <div className="table-scroll">
           <table className="table table-hover mb-0">
             <thead className="table-light">
               <tr>
@@ -130,6 +131,7 @@ export default function LeadList() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
     </div>

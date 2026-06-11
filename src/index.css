@@ -12,10 +12,44 @@ body { background: #f8f7f4; }
   top: 0; left: 0; bottom: 0;
   display: flex;
   flex-direction: column;
-  z-index: 100;
+  z-index: 200;
+  transition: transform 0.25s ease;
 }
 
+.sidebar.mobile-open { transform: translateX(0); }
+
 .main-content { margin-left: var(--sidebar-w); min-height: 100vh; }
+
+.mobile-topbar {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  background: var(--sidebar-bg);
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 150;
+}
+.mobile-topbar .brand-name { color: #fff; font-weight: 600; font-size: 15px; }
+.hamburger {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 4px 6px;
+  line-height: 1;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 190;
+}
+.sidebar-overlay.active { display: block; }
 
 .sidebar-brand {
   display: flex;
@@ -24,83 +58,50 @@ body { background: #f8f7f4; }
   padding: 20px 16px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
-
 .brand-mark {
   width: 30px; height: 30px;
   background: rgba(255,255,255,0.1);
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: 6px;
   display: flex; align-items: center; justify-content: center;
-  color: #fff;
-  font-weight: 600;
-  font-size: 14px;
+  color: #fff; font-weight: 600; font-size: 14px;
 }
-
 .brand-name { color: #fff; font-weight: 600; font-size: 15px; letter-spacing: -0.3px; }
-
 .sidebar-nav { flex: 1; padding: 10px; display: flex; flex-direction: column; gap: 2px; }
-
 .sidebar-footer { padding: 10px; border-top: 1px solid rgba(255,255,255,0.08); }
 
 .nav-item {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 8px 12px;
-  border-radius: 6px;
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 12px; border-radius: 6px;
   color: rgba(255,255,255,0.55);
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 400;
-  transition: all 0.15s;
-  background: none;
-  border: none;
-  width: 100%;
+  text-decoration: none; font-size: 13px; font-weight: 400;
+  transition: all 0.15s; background: none; border: none; width: 100%;
+  cursor: pointer;
 }
 .nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.85); }
 .nav-item.active, .nav-item--active { background: rgba(255,255,255,0.1); color: #fff; font-weight: 500; }
 
 .status-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 9px;
-  border-radius: 100px;
-  font-size: 11px;
-  font-weight: 500;
-  white-space: nowrap;
+  display: inline-flex; align-items: center;
+  padding: 2px 9px; border-radius: 100px;
+  font-size: 11px; font-weight: 500; white-space: nowrap;
 }
 
 .tag-chip {
-  padding: 4px 12px;
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 500;
-  background: #f0ede6;
-  color: #6b6760;
-  border: 1px solid #d4d1c8;
-  cursor: pointer;
-  transition: all 0.15s;
+  padding: 4px 12px; border-radius: 100px;
+  font-size: 12px; font-weight: 500;
+  background: #f0ede6; color: #6b6760;
+  border: 1px solid #d4d1c8; cursor: pointer; transition: all 0.15s;
 }
 .tag-chip:hover { border-color: #1a1917; color: #1a1917; }
 .tag-chip--selected { background: #1a1917; color: #fff !important; border-color: #1a1917; }
 .tag-chip--selected:hover { background: #2d2c2a; color: #fff !important; border-color: #2d2c2a; }
-
 .tag-pill {
-  padding: 2px 9px;
-  background: #e9ecef;
-  color: #1a1917;
-  border-radius: 100px;
-  font-size: 11px;
-  font-weight: 500;
+  padding: 2px 9px; background: #e9ecef; color: #1a1917;
+  border-radius: 100px; font-size: 11px; font-weight: 500;
 }
 
-.pipeline-bar-track {
-  flex: 1;
-  height: 6px;
-  background: #e9ecef;
-  border-radius: 100px;
-  overflow: hidden;
-}
+.pipeline-bar-track { flex: 1; height: 6px; background: #e9ecef; border-radius: 100px; overflow: hidden; }
 .pipeline-bar-fill { height: 100%; border-radius: 100px; transition: width 0.6s ease; min-width: 3px; }
 
 .stat-card-link { text-decoration: none; display: block; }
@@ -108,21 +109,13 @@ body { background: #f8f7f4; }
 .stat-count { font-size: 28px; font-weight: 700; letter-spacing: -1px; line-height: 1; }
 
 .chart-wrap { position: relative; height: 220px; }
-.chart-wrap--doughnut {
-  height: 260px;
-  max-width: 260px;
-  margin: 0 auto;
-}
+.chart-wrap--doughnut { height: 260px; max-width: 260px; margin: 0 auto; }
 
 .agent-avatar {
   width: 44px; height: 44px;
-  background: #1a1917;
-  color: #fff;
-  border-radius: 50%;
+  background: #1a1917; color: #fff; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-  font-weight: 600;
-  flex-shrink: 0;
+  font-size: 14px; font-weight: 600; flex-shrink: 0;
 }
 
 .comments-list { max-height: 340px; overflow-y: auto; }
@@ -132,7 +125,35 @@ body { background: #f8f7f4; }
 
 .page-loading { padding: 60px; text-align: center; color: #6b6760; }
 
-@media (max-width: 900px) {
-  .sidebar { display: none; }
-  .main-content { margin-left: 0; }
+.danger-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; border-bottom: 1px solid #f0ede6;
+}
+.danger-item:last-child { border-bottom: none; }
+
+.table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* MOBILE  ≤ 768px */
+@media (max-width: 768px) {
+  /* hide desktop sidebar, show topbar */
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.mobile-open { transform: translateX(0); }
+  .mobile-topbar { display: flex; }
+
+  .main-content { margin-left: 0; padding-top: 52px; }
+
+  .container-fluid { padding-left: 12px !important; padding-right: 12px !important; }
+  .p-4 { padding: 14px 12px !important; }
+
+  .row.g-3 > .col { flex: 0 0 50%; max-width: 50%; }
+
+  .stat-count { font-size: 22px; }
+
+  .chart-wrap { height: 180px; }
+  .chart-wrap--doughnut { height: 220px; }
+
+  .filter-bar { flex-direction: column; }
+  .filter-bar .form-select,
+  .filter-bar .btn { width: 100% !important; }
+  .pipeline-bar-track { min-width: 60px; }
 }

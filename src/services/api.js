@@ -57,6 +57,11 @@ export const createAgent = async (data) => {
   return handleResponse(res);
 };
 
+export const deleteAgent = async (id) => {
+  const res = await fetch(`${BASE_URL}/agents/${id}`, { method: "DELETE" });
+  return handleResponse(res);
+};
+
 // COMMENTS
 export const getComments = async (id) => {
   const res = await fetch(`${BASE_URL}/leads/${id}/comments`);
