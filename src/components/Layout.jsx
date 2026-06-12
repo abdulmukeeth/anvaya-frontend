@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 const navItems = [
   { to: "/", label: "Dashboard", icon: "⬡", exact: true },
@@ -20,15 +20,19 @@ export default function Layout({ children }) {
           <button className="hamburger" onClick={() => setOpen(o => !o)} aria-label="Menu">
             {open ? "✕" : "☰"}
           </button>
-          <span className="brand-name">Anvaya</span>
+          <Link to="/" className="text-decoration-none" onClick={close}>
+            <span className="brand-name">Anvaya</span>
+          </Link>
         </div>
       </div>
       <div className={`sidebar-overlay${open ? " active" : ""}`} onClick={close} />
 
       <aside className={`sidebar${open ? " mobile-open" : ""}`}>
         <div className="sidebar-brand">
-          <div className="brand-mark">A</div>
-          <span className="brand-name">Anvaya</span>
+          <Link to="/" className="d-flex align-items-center gap-2 text-decoration-none">
+            <div className="brand-mark">A</div>
+            <span className="brand-name">Anvaya</span>
+          </Link>
         </div>
         <nav className="sidebar-nav">
           {navItems.map((item) => (
