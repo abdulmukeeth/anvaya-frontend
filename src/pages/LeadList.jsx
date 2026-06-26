@@ -95,44 +95,73 @@ export default function LeadList() {
           {hasFilters && <button className="btn btn-sm btn-outline-secondary" onClick={() => setSearchParams({})}>Clear filters</button>}
         </div>
       ) : (
-        <div className="card border shadow-sm">
-          <div className="table-scroll">
-          <table className="table table-hover mb-0">
-            <thead className="table-light">
-              <tr>
-                <th className="fw-semibold" style={{ fontSize: 12 }}>NAME</th>
-                <th className="fw-semibold" style={{ fontSize: 12 }}>AGENT</th>
-                <th className="fw-semibold" style={{ fontSize: 12 }}>SOURCE</th>
-                <th className="fw-semibold" style={{ fontSize: 12 }}>STATUS</th>
-                <th className="fw-semibold" style={{ fontSize: 12 }}>PRIORITY</th>
-                <th className="fw-semibold" style={{ fontSize: 12 }}>DAYS</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {sorted.map(lead => (
-                <tr key={lead._id}>
-                  <td className="fw-medium align-middle" style={{ fontSize: 13 }}>{lead.name}</td>
-                  <td className="text-muted align-middle" style={{ fontSize: 12 }}>{lead.salesAgent?.name || "—"}</td>
-                  <td className="text-muted align-middle" style={{ fontSize: 12 }}>{lead.source}</td>
-                  <td className="align-middle">
-                    <span className="badge rounded-pill px-2" style={{ background: STATUS_BG[lead.status], color: STATUS_COLOR[lead.status], fontSize: 11, border: `1px solid ${STATUS_COLOR[lead.status]}40` }}>
-                      {lead.status}
-                    </span>
-                  </td>
-                  <td className="align-middle fw-medium" style={{ fontSize: 12, color: PRIORITY_COLOR[lead.priority] }}>
-                    ● {lead.priority}
-                  </td>
-                  <td className="text-muted align-middle" style={{ fontSize: 12 }}>{lead.timeToClose}d</td>
-                  <td className="align-middle">
-                    <Link to={`/leads/${lead._id}`} className="btn btn-outline-dark btn-sm">View</Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <>
+          {/* ── Desktop / tablet: table ── */}
+          <div className="card border shadow-sm d-none d-md-block">
+            <div className="table-scroll">
+              <table className="table table-hover mb-0">
+                <thead className="table-light">
+                  <tr>
+                    <th className="fw-semibold" style={{ fontSize: 12 }}>NAME</th>
+                    <th className="fw-semibold" style={{ fontSize: 12 }}>AGENT</th>
+                    <th className="fw-semibold" style={{ fontSize: 12 }}>SOURCE</th>
+                    <th className="fw-semibold" style={{ fontSize: 12 }}>STATUS</th>
+                    <th className="fw-semibold" style={{ fontSize: 12 }}>PRIORITY</th>
+                    <th className="fw-semibold" style={{ fontSize: 12 }}>DAYS</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sorted.map(lead => (
+                    <tr key={lead._id}>
+                      <td className="fw-medium align-middle" style={{ fontSize: 13 }}>{lead.name}</td>
+                      <td className="text-muted align-middle" style={{ fontSize: 12 }}>{lead.salesAgent?.name || "—"}</td>
+                      <td className="text-muted align-middle" style={{ fontSize: 12 }}>{lead.source}</td>
+                      <td className="align-middle">
+                        <span className="badge rounded-pill px-2" style={{ background: STATUS_BG[lead.status], color: STATUS_COLOR[lead.status], fontSize: 11, border: `1px solid ${STATUS_COLOR[lead.status]}40` }}>
+                          {lead.status}
+                        </span>
+                      </td>
+                      <td className="align-middle fw-medium" style={{ fontSize: 12, color: PRIORITY_COLOR[lead.priority] }}>
+                        ● {lead.priority}
+                      </td>
+                      <td className="text-muted align-middle" style={{ fontSize: 12 }}>{lead.timeToClose}d</td>
+                      <td className="align-middle">
+                        <Link to={`/leads/${lead._id}`} className="btn btn-outline-dark btn-sm">View</Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+
+          {/* ── Mobile: stacked cards ── */}
+          <div className="d-flex d-md-none flex-column gap-2">
+            {sorted.map(lead => (
+              <Link key={lead._id} to={`/leads/${lead._id}`} className="lead-card-mobile text-decoration-none">
+                <div className="card border shadow-sm">
+                  <div className="card-body p-3">
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <span className="fw-semibold text-dark" style={{ fontSize: 14 }}>{lead.name}</span>
+                      <span className="badge rounded-pill px-2" style={{ background: STATUS_BG[lead.status], color: STATUS_COLOR[lead.status], fontSize: 11, border: `1px solid ${STATUS_COLOR[lead.status]}40`, flexShrink: 0 }}>
+                        {lead.status}
+                      </span>
+                    </div>
+                    <div className="d-flex flex-wrap gap-3 text-muted" style={{ fontSize: 12 }}>
+                      <span><i className="bi bi-person-fill me-1"></i>{lead.salesAgent?.name || "Unassigned"}</span>
+                      <span><i className="bi bi-signpost-fill me-1"></i>{lead.source}</span>
+                      <span><i className="bi bi-clock-fill me-1"></i>{lead.timeToClose}d</span>
+                    </div>
+                    <div className="mt-2 fw-medium" style={{ fontSize: 12, color: PRIORITY_COLOR[lead.priority] }}>
+                      ● {lead.priority} priority
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

@@ -8,10 +8,10 @@ const PRIORITIES  = ["High", "Medium", "Low"];
 const AVAILABLE_TAGS = ["High Value", "Follow-up", "Urgent", "Long-term", "Referral", "Hot Lead"];
 
 const TIPS = [
-  { icon: "👤", title: "Assign an agent", body: "Every lead needs an owner. Assign a sales agent so someone is accountable for follow-up." },
-  { icon: "⏱️", title: "Set realistic timelines", body: "Days to Close helps track urgency. Be honest — overdue leads clutter your pipeline." },
-  { icon: "🏷️", title: "Use tags wisely", body: "Tags like 'High Value' or 'Follow-up' make filtering your lead list much faster." },
-  { icon: "📊", title: "Priority matters", body: "High priority leads surface first in reports. Reserve it for leads with real urgency." },
+  { icon: <i className="bi bi-person-fill"></i>, title: "Assign an agent", body: "Every lead needs an owner. Assign a sales agent so someone is accountable for follow-up." },
+  { icon: <i className="bi bi-clock-fill"></i>, title: "Set realistic timelines", body: "Days to Close helps track urgency. Be honest — overdue leads clutter your pipeline." },
+  { icon: <i className="bi bi-tag-fill"></i>, title: "Use tags wisely", body: "Tags like 'High Value' or 'Follow-up' make filtering your lead list much faster." },
+  { icon: <i className="bi bi-bar-chart-fill"></i>, title: "Priority matters", body: "High priority leads surface first in reports. Reserve it for leads with real urgency." },
 ];
 
 export default function AddLead() {
@@ -31,9 +31,19 @@ export default function AddLead() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); setLoading(true);
+    setError(""); 
+    const trimmedName = form.name.trim();
+    if (!trimmedName || trimmedName.length < 2) {
+      setError("Lead name must be at least 2 characters.");
+      return;
+    }
+    if (!form.salesAgent) {
+      setError("Please select a sales agent.");
+      return;
+    }
+    setLoading(true);
     try {
-      await createLead({ ...form, timeToClose: Number(form.timeToClose) });
+      await createLead({ ...form, name: trimmedName, timeToClose: Number(form.timeToClose) });
       navigate("/leads");
     } catch (err) { setError(err.message); }
     finally { setLoading(false); }
@@ -54,17 +64,17 @@ export default function AddLead() {
 
                 <div className="mb-3">
                   <label className="form-label fw-semibold small text-uppercase text-muted">Lead Name *</label>
-                  <input name="name" className="form-control" placeholder="e.g. Acme Corp" onChange={handleChange} required />
+                  <input name="name" className="form-control" placeholder="e.g. Acme Corp" minLength={2} onChange={handleChange} required />
                 </div>
 
                 <div className="row g-3 mb-3">
-                  <div className="col-6">
+                  <div className="col-12 col-sm-6">
                     <label className="form-label fw-semibold small text-uppercase text-muted">Source *</label>
                     <select name="source" className="form-select" onChange={handleChange} defaultValue="Website">
                       {SOURCES.map(s => <option key={s}>{s}</option>)}
                     </select>
                   </div>
-                  <div className="col-6">
+                  <div className="col-12 col-sm-6">
                     <label className="form-label fw-semibold small text-uppercase text-muted">Sales Agent *</label>
                     <select name="salesAgent" className="form-select" onChange={handleChange} required>
                       <option value="">Select Agent</option>
@@ -74,19 +84,19 @@ export default function AddLead() {
                 </div>
 
                 <div className="row g-3 mb-3">
-                  <div className="col-4">
+                  <div className="col-12 col-sm-4">
                     <label className="form-label fw-semibold small text-uppercase text-muted">Status</label>
                     <select name="status" className="form-select" onChange={handleChange} defaultValue="New">
                       {STATUSES.map(s => <option key={s}>{s}</option>)}
                     </select>
                   </div>
-                  <div className="col-4">
+                  <div className="col-12 col-sm-4">
                     <label className="form-label fw-semibold small text-uppercase text-muted">Priority</label>
                     <select name="priority" className="form-select" onChange={handleChange} defaultValue="Medium">
                       {PRIORITIES.map(p => <option key={p}>{p}</option>)}
                     </select>
                   </div>
-                  <div className="col-4">
+                  <div className="col-12 col-sm-4">
                     <label className="form-label fw-semibold small text-uppercase text-muted">Days to Close *</label>
                     <input name="timeToClose" type="number" min="1" className="form-control" placeholder="30" onChange={handleChange} required />
                   </div>

@@ -2,11 +2,11 @@ import { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 const navItems = [
-  { to: "/", label: "Dashboard", icon: "⬡", exact: true },
-  { to: "/leads", label: "Leads", icon: "◈" },
-  { to: "/agents", label: "Agents", icon: "◉" },
-  { to: "/reports", label: "Reports", icon: "◫" },
-  { to: "/settings", label: "Settings", icon: "⚙" },
+  { to: "/", label: "Dashboard", icon: <i className="bi bi-grid-1x2-fill"></i>, exact: true },
+  { to: "/leads", label: "Leads", icon: <i className="bi bi-diagram-3-fill"></i> },
+  { to: "/agents", label: "Agents", icon: <i className="bi bi-people-fill"></i> },
+  { to: "/reports", label: "Reports", icon: <i className="bi bi-bar-chart-line-fill"></i> },
+  { to: "/settings", label: "Settings", icon: <i className="bi bi-gear-fill"></i> },
 ];
 
 export default function Layout({ children }) {
@@ -18,7 +18,7 @@ export default function Layout({ children }) {
       <div className="mobile-topbar">
         <div className="d-flex align-items-center gap-2">
           <button className="hamburger" onClick={() => setOpen(o => !o)} aria-label="Menu">
-            {open ? "✕" : "☰"}
+            {open ? <i className="bi bi-x-lg"></i> : <i className="bi bi-list"></i>}
           </button>
           <Link to="/" className="text-decoration-none" onClick={close}>
             <span className="brand-name">Anvaya</span>
@@ -50,7 +50,7 @@ export default function Layout({ children }) {
         </nav>
         <div className="sidebar-footer">
           <NavLink to="/agents" className="nav-item" onClick={close}>
-            <span style={{ fontSize: 16 }}>＋</span>
+            <span style={{ fontSize: 16 }}><i className="bi bi-plus-circle-fill"></i></span>
             <span>Add Agent</span>
           </NavLink>
         </div>

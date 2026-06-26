@@ -91,7 +91,7 @@ export default function Dashboard() {
             <div className="card-body">
               {pipeline && pipeline.totalLeadsInPipeline === 0 ? (
                 <div className="d-flex flex-column align-items-center justify-content-center text-center py-4" style={{ minHeight: 140 }}>
-                  <span style={{ fontSize: 32, marginBottom: 10 }}>📭</span>
+                  <span style={{ fontSize: 32, marginBottom: 10 }}><i className="bi bi-inbox"></i></span>
                   <p className="fw-medium mb-1" style={{ fontSize: 14 }}>No active leads yet</p>
                   <p className="text-muted small mb-3">Leads you create will appear here as pipeline progress.</p>
                   <Link to="/leads/new" className="btn btn-dark btn-sm">+ Create your first lead</Link>

@@ -34,7 +34,7 @@ function ConfirmModal({ item, onConfirm, onCancel }) {
           alignItems: "center", justifyContent: "center",
           marginBottom: 16,
         }}>
-          <span style={{ fontSize: 20 }}>🗑️</span>
+          <span style={{ fontSize: 20 }}><i className="bi bi-trash3-fill"></i></span>
         </div>
 
         <h6 className="fw-semibold mb-1" style={{ fontSize: 15 }}>

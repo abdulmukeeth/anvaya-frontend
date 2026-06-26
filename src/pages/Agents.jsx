@@ -14,9 +14,19 @@ export default function Agents() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); setSubmitting(true);
+    setError(""); 
+    const trimmedName = form.name.trim();
+    if (!trimmedName || trimmedName.length < 2) {
+      setError("Agent name must be at least 2 characters.");
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    setSubmitting(true);
     try {
-      await createAgent(form);
+      await createAgent({ name: trimmedName, email: form.email.trim() });
       setForm({ name: "", email: "" });
       setShowForm(false);
       load();
@@ -49,7 +59,7 @@ export default function Agents() {
                   <div className="mb-3">
                     <label className="form-label small fw-semibold text-muted text-uppercase">Agent Name *</label>
                     <input className="form-control" placeholder="Jane Smith" value={form.name}
-                      onChange={e => setForm({ ...form, name: e.target.value })} required />
+                      onChange={e => setForm({ ...form, name: e.target.value })} minLength={2} required />
                   </div>
                   <div className="mb-4">
                     <label className="form-label small fw-semibold text-muted text-uppercase">Email Address *</label>
